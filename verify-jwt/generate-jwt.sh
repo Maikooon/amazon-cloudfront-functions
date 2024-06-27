@@ -12,12 +12,16 @@ header='{
   "typ": "JWT"
 }'
 
+# Calculate the current time and expiration time
+iat=$(date +%s)
+exp=$((iat + 3600))
+
 payload='{
   "sub": "1234567890",
   "name": "John Doe",
-  "iat": 1516239022, 
-  "nbf" : 161623932, 
-  "exp" : 1616239042
+  "iat":  '"${iat}"',
+  "nbf" : '"${iat}"', 
+  "exp" :'"${exp}"'
 }'
 
 base64_encode()

@@ -10,8 +10,8 @@
         "method": "GET",
         "uri": "/index.html",
         "querystring": {
-            "jwt": { "value": "Not-A-JWT" },
-            "taest": { "value": "anotherQueryString" }
+            "jwt": { "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNzE5MjI4MTY5LCJuYmYiOjE3MTkyMjgxNjksImV4cCI6MTcxOTIzMTc2OX0.SFMa7Digb5mkBQcUDt2wajkdWOlzCzZX8Lv3n4O4a8I" },
+            "test": { "value": "anotherQueryString" }
         },
         "headers": {
             "host": { "value": "www.example.com" },

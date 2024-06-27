@@ -1,10 +1,13 @@
 var crypto = require('crypto');
+// const jwt = require('jsonwebtoken');
 
 //Response when JWT is not valid.
 var response401 = {
     statusCode: 401,
     statusDescription: 'Unauthorized'
 };
+
+
 
 function jwt_decode(token, key, noVerify, algorithm) {
     // check token
@@ -39,11 +42,11 @@ function jwt_decode(token, key, noVerify, algorithm) {
 
         // Support for nbf and exp claims.
         // According to the RFC, they should be in seconds.
-        if (payload.nbf && Date.now() < payload.nbf*1000) {
+        if (payload.nbf && Date.now() < payload.nbf * 1000) {
             throw new Error('Token not yet active');
         }
 
-        if (payload.exp && Date.now() > payload.exp*1000) {
+        if (payload.exp && Date.now() > payload.exp * 1000) {
             throw new Error('Token expired');
         }
     }
@@ -57,20 +60,19 @@ function _constantTimeEquals(a, b) {
     if (a.length != b.length) {
         return false;
     }
-    
+
     var xor = 0;
     for (var i = 0; i < a.length; i++) {
-    xor |= (a.charCodeAt(i) ^ b.charCodeAt(i));
+        xor |= (a.charCodeAt(i) ^ b.charCodeAt(i));
     }
-    
+
     return 0 === xor;
 }
 
 function _verify(input, key, method, type, signature) {
-    if(type === "hmac") {
+    if (type === "hmac") {
         return _constantTimeEquals(signature, _sign(input, key, method));
-    }
-    else {
+    } else {
         throw new Error('Algorithm type not recognized');
     }
 }
@@ -80,7 +82,7 @@ function _sign(input, key, method) {
 }
 
 function _base64urlDecode(str) {
-    return String.bytesFrom(str, 'base64url')
+    return Buffer.from(str, 'base64url').toString();
 }
 
 function handler(event) {
@@ -91,17 +93,17 @@ function handler(event) {
     var key = "LzdWGpAToQ1DqYuzHxE6YOqi7G3X2yvNBot9mCXfx5k";
 
     // If no JWT token, then generate HTTP redirect 401 response.
-    if(!request.querystring.jwt) {
+    if (!request.querystring.jwt) {
         console.log("Error: No JWT in the querystring");
         return response401;
     }
 
+    /////////////////////////////////////////
     var jwtToken = request.querystring.jwt.value;
-
-    try{ 
+    ///////////////////////////////////////////////////
+    try {
         jwt_decode(jwtToken, key);
-    }
-    catch(e) {
+    } catch (e) {
         console.log(e);
         return response401;
     }
